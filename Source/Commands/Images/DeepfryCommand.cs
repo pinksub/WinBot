@@ -65,11 +65,13 @@ namespace WinBot.Commands.Images
 
         public static void DoEnhancedFrying(MagickImage image, ImageArgs args)
         {
-            if(args.scale > 3)
-                throw new System.Exception("Scale must not be greater than 3");
+            if(args.scale > 5)
+                throw new System.Exception("Scale must not be greater than 5");
+            else if(args.scale <= 0)
+                throw new System.Exception("Scale must not be less than or equal to 0");
 
             image.Resize(image.Width/2, image.Height/2);
-            image.Posterize(2, DitherMethod.Undefined, Channels.RGB);
+            image.Posterize(2+(args.scale-1), DitherMethod.Undefined, Channels.RGB);
             image.Resize(image.Width*2, image.Height*2);
             
             if(!string.IsNullOrWhiteSpace(args.textArg) && args.textArg.ToLower() == "-jpeg" && args.extension.ToLower() != "gif")
